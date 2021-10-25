@@ -70,6 +70,10 @@ class Render {
 		this.canvas.style.border = "1px solid black";
 	}
 
+	AddGameObject(gameObject: GameObject) {
+		this.bodies.push(gameObject);
+	}
+
 	Run() {
 		const loop = (ms: number) => {
 			window.requestAnimationFrame(loop);
@@ -83,8 +87,9 @@ class Render {
 	}
 
 	private World(ms: number) {
-		this.ctx.fillStyle = "transparent";
-		this.ctx.fillRect(0, 0, this.width, this.height);
+		//this.ctx.fillStyle = "white";
+		//this.ctx.fillRect(0, 0, this.width, this.height);
+		this.ctx.clearRect(0, 0, this.width, this.height);
 
 		this.ObjectWireframes(this.bodies);
 	}
