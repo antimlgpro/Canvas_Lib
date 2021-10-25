@@ -19,13 +19,6 @@ class Transform extends Component {
 	SetPosition(position: Vector) {
 		var delta = Vector.Sub(position, this.position);
 		this.position = position;
-		/*
-		this.positionPrev.x += delta.x;
-		this.positionPrev.y += delta.y;
-
-		this.position.x += delta.x;
-		this.position.y += delta.y;
-		*/
 
 		Vertices.Translate(this.gameObject.vertices, delta);
 		//Bounds.update(part.bounds, part.vertices, body.velocity);
