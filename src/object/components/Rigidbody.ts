@@ -28,9 +28,9 @@ class Rigidbody extends Component {
 		this.transform = <Transform>gameObject.GetComponent("Transform");
 
 		this.position = this.transform.position;
-		this.positionPrev = this.transform.position;
+		this.positionPrev = this.position;
 		this.rotation = this.transform.rotation;
-		this.rotationPrev = this.transform.position;
+		this.rotationPrev = this.rotation;
 
 		this.velocity = Vector.zero;
 		this.force = Vector.zero;
@@ -45,6 +45,8 @@ class Rigidbody extends Component {
 		var frictionAir = 1 - this.frictionAir,
 			velocityPrevX = this.position.x - this.positionPrev.x,
 			velocityPrevY = this.position.y - this.positionPrev.y;
+
+		console.log(this.velocity);
 
 		// update velocity with Verlet integration
 		this.velocity.x =
