@@ -8,6 +8,8 @@ class Component {
 		this.gameObject = gameObject;
 		this.type = type;
 	}
+
+	Update(deltaTime: number) {}
 }
 
 export default Component;
