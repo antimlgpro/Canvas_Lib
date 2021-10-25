@@ -1,3 +1,5 @@
+import Mathf from "./Mathf";
+
 class Vector {
 	x: number;
 	y: number;
@@ -38,6 +40,12 @@ class Vector {
 		}
 
 		return new Vector(vector.x / magnitude, vector.y / magnitude);
+	}
+
+	static Lerp(a: Vector, b: Vector, t: number) {
+		t = Mathf.Clamp01(t);
+
+		return new Vector(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
 	}
 
 	static zero = new Vector(0, 0);
