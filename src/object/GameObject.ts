@@ -28,12 +28,15 @@ class GameObject {
 	}
 
 	GetComponent(type: string) {
-		console.log(this.components);
 		for (const comp of this.components) {
 			if (comp.type === type) {
 				return comp;
 			}
 		}
+	}
+
+	GetComponents() {
+		return this.components;
 	}
 }
 
