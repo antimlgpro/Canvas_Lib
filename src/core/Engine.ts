@@ -10,6 +10,7 @@ interface Timing {
 	lastElapsed: number;
 }
 
+/* eslint-disable-next-line */
 interface EngineOptions {}
 
 class Engine {
@@ -21,11 +22,12 @@ class Engine {
 		lastElapsed: 0,
 	};
 	gravity: Vector = new Vector(0, 1);
-	gravityScale: number = 0.001;
+	gravityScale = 0.001;
 
 	render: Render;
 	gameObjects: GameObject[];
 
+	/* eslint-disable-next-line */
 	constructor(options: EngineOptions) {
 		// todo add options
 		this.gameObjects = [];
@@ -38,8 +40,8 @@ class Engine {
 	}
 
 	Update(delta?: number) {
-		let startTime = Date.now();
-		let deltaTime = delta || 1000 / 60;
+		const startTime = Date.now();
+		const deltaTime = delta || 1000 / 60;
 
 		this.timing.delta = deltaTime;
 		this.timing.timestamp += deltaTime;
@@ -52,8 +54,8 @@ class Engine {
 			for (const comp of comps) {
 				if (comp.type == "Rigidbody") {
 					// This applies gravity
-					let body = <Rigidbody>comp;
-					let force = new Vector(
+					const body = <Rigidbody>comp;
+					const force = new Vector(
 						body.mass * this.gravity.x * this.gravityScale,
 						body.mass * this.gravity.y * this.gravityScale
 					);
@@ -70,7 +72,7 @@ class Engine {
 
 	protected ApplyGravity() {
 		for (const go of this.gameObjects) {
-			let rigidbody = <Rigidbody>go.GetComponent("Rigidbody");
+			const rigidbody = <Rigidbody>go.GetComponent("Rigidbody");
 			if (!rigidbody) continue;
 		}
 	}

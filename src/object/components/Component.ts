@@ -4,12 +4,14 @@ class Component {
 	gameObject: GameObject;
 	type: string;
 
-	constructor(gameObject: GameObject, type: string = "Base") {
+	constructor(gameObject: GameObject, type = "Base") {
 		this.gameObject = gameObject;
 		this.type = type;
 	}
 
-	Update(deltaTime: number) {}
+	Update(deltaTime: number) {
+		//
+	}
 }
 
 export default Component;

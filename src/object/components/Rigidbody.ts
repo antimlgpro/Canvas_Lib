@@ -15,12 +15,12 @@ class Rigidbody extends Component {
 	velocity: Vector;
 	force: Vector;
 
-	friction: number = 0.1;
-	frictionStatic: number = 0.5;
-	frictionAir: number = 0.1;
+	friction = 0.1;
+	frictionStatic = 0.5;
+	frictionAir = 0.1;
 
-	mass: number = 1;
-	speed: number = 0;
+	mass = 1;
+	speed = 0;
 
 	constructor(gameObject: GameObject) {
 		super(gameObject, "Rigidbody");
@@ -36,13 +36,15 @@ class Rigidbody extends Component {
 		this.force = Vector.zero;
 	}
 
-	Start() {}
+	Start() {
+		//
+	}
 
 	Update(deltaTime: number) {
-		var deltaTimeSquared = Math.pow(deltaTime, 2);
+		const deltaTimeSquared = Math.pow(deltaTime, 2);
 
 		// from the previous step
-		var frictionAir = 1 - this.frictionAir,
+		const frictionAir = 1 - this.frictionAir,
 			velocityPrevX = this.position.x - this.positionPrev.x,
 			velocityPrevY = this.position.y - this.positionPrev.y;
 
@@ -66,7 +68,7 @@ class Rigidbody extends Component {
 	}
 
 	SetPosition(position: Vector) {
-		var delta = Vector.Sub(position, this.position);
+		const delta = Vector.Sub(position, this.position);
 		this.position = position;
 
 		Vertices.Translate(this.gameObject.vertices, delta);

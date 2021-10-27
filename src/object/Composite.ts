@@ -1,6 +1,7 @@
 import Common from "../core/Common";
 import GameObject from "./GameObject";
 
+/* eslint-disable-next-line */
 interface CompositeOptions {}
 
 class Composite {
@@ -9,12 +10,9 @@ class Composite {
 	parent: unknown;
 	gameObjects: GameObject[];
 
-	static Create(options: CompositeOptions) {
-		let composite = new Composite();
-		// todo: add options
-		composite.id = Common.NextId();
-
-		return composite;
+	/* eslint-disable-next-line */
+	constructor(options: CompositeOptions) {
+		this.id = Common.NextId();
 	}
 }
 

@@ -18,7 +18,7 @@ class GameObject {
 
 		this.vertices = vertices ?? [];
 
-		let transform = new Transform(this);
+		const transform = new Transform(this);
 		transform.SetPosition(position);
 		this.AddComponent(transform);
 	}

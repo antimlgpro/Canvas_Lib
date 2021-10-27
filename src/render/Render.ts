@@ -29,11 +29,11 @@ class Render {
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;
 
-	fps: number = 60;
+	fps = 60;
 
-	width: number = 100;
-	height: number = 100;
-	hasBounds: boolean = false;
+	width = 100;
+	height = 100;
+	hasBounds = false;
 	bodies: GameObject[];
 
 	bounds: Bounds = {
@@ -63,7 +63,7 @@ class Render {
 
 		this.bodies = [];
 
-		let element: HTMLElement = <HTMLElement>(
+		const element: HTMLElement = <HTMLElement>(
 			document.getElementById("container")
 		);
 		element.appendChild(this.canvas);
@@ -95,13 +95,13 @@ class Render {
 	}
 
 	private ObjectWireframes(bodies: GameObject[]) {
-		let c = this.ctx;
+		const c = this.ctx;
 
 		c.beginPath();
 
 		// render all bodies
 		for (let i = 0; i < bodies.length; i++) {
-			let body = bodies[i];
+			const body = bodies[i];
 
 			//if (!body.render.visible) continue;
 
@@ -134,12 +134,12 @@ class Render {
 	}
 
 	private _UpdateTiming(ms: number) {
-		let timing = this.timing;
+		const timing = this.timing;
 		timing.delta = ms - timing.lastTime;
 	}
 
 	private _CreateCanvas(): HTMLCanvasElement {
-		let canvas = document.createElement("canvas");
+		const canvas = document.createElement("canvas");
 		canvas.width = this.width;
 		canvas.height = this.height;
 		canvas.oncontextmenu = () => {

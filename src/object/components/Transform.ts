@@ -17,7 +17,7 @@ class Transform extends Component {
 	}
 
 	SetPosition(position: Vector) {
-		var delta = Vector.Sub(position, this.position);
+		const delta = Vector.Sub(position, this.position);
 		this.position = position;
 
 		Vertices.Translate(this.gameObject.vertices, delta);

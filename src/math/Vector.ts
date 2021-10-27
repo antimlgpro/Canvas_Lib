@@ -17,7 +17,7 @@ class Vector {
 	}
 
 	static Dist(a: Vector, b: Vector): number {
-		let squaredSum = Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2);
+		const squaredSum = Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2);
 		return Math.sqrt(squaredSum);
 	}
 
@@ -34,7 +34,7 @@ class Vector {
 	}
 
 	static Normalize(vector: Vector) {
-		let magnitude = Vector.Magnitude(vector);
+		const magnitude = Vector.Magnitude(vector);
 		if (magnitude === 0) {
 			return Vector.zero;
 		}

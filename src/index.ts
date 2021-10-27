@@ -1,10 +1,7 @@
 import Engine, { EngineOptions } from "./core/Engine";
 import Primitives from "./factory/Primitives";
 import GameObject from "./object/GameObject";
-import Transform from "./object/components/Transform";
 import Render, { RenderOptions } from "./render/Render";
-import Vector from "./math/Vector";
-import Mathf from "./math/Mathf";
 import Rigidbody from "./object/components/Rigidbody";
 
 const engineOptions: EngineOptions = {};
@@ -15,8 +12,8 @@ const renderOptions: RenderOptions = {
 	hasBounds: false,
 };
 
-var _Engine: Engine;
-var _Render: Render;
+let _Engine: Engine;
+let _Render: Render;
 
 const gameLoop = () => {
 	_Engine.Update();
@@ -28,7 +25,7 @@ window.onload = () => {
 
 	_Engine.render = _Render;
 
-	var a: GameObject;
+	let a: GameObject;
 	a = <GameObject>Primitives.Rectangle(0, 0, 100, 100);
 	a.AddComponent(new Rigidbody(a));
 	_Engine.AddGameObject(a);
