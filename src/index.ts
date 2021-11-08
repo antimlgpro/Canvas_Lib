@@ -1,15 +1,16 @@
 import Engine, { EngineOptions } from "./core/Engine";
 import Primitives from "./factory/Primitives";
-import GameObject from "./object/GameObject";
+import GameObject, { ObjectOptions } from "./object/GameObject";
 import Render, { RenderOptions } from "./render/Render";
-import Rigidbody from "./object/components/Rigidbody";
 
 const engineOptions: EngineOptions = {};
 const renderOptions: RenderOptions = {
 	fps: 60,
-	width: 500,
-	height: 500,
+	width: 600,
+	height: 600,
 	hasBounds: false,
+	center: true,
+	backgroundColor: "#202020",
 };
 
 let _Engine: Engine;
@@ -25,16 +26,12 @@ window.onload = () => {
 
 	_Engine.render = _Render;
 
-	let a: GameObject;
-	a = <GameObject>Primitives.Rectangle(0, 0, 100, 100);
-	a.AddComponent(new Rigidbody(a));
-	_Engine.AddGameObject(a);
-
-	a = <GameObject>Primitives.Rectangle(100, 30, 75, 75);
-	a.AddComponent(new Rigidbody(a));
+	const options: ObjectOptions = {
+		fillColor: "#cb0020",
+	};
+	const a = <GameObject>Primitives.Rectangle(200, 300, 100, 100, options);
 	_Engine.AddGameObject(a);
 
 	_Render.Run();
-
 	setInterval(gameLoop, 1000 / 60);
 };
