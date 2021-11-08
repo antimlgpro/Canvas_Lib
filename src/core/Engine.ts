@@ -1,6 +1,7 @@
 import Vector from "../math/Vector";
 import GameObject from "../object/GameObject";
 import Render from "../render/Render";
+import EngineModule from "./modules/EngineModule";
 
 interface Timing {
 	delta: number;
@@ -13,7 +14,7 @@ interface Timing {
 interface EngineOptions {}
 
 class Engine {
-	modules: Module[];
+	modules: EngineModule[];
 	timing: Timing = {
 		delta: 0,
 		timestamp: 0,
