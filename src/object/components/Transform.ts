@@ -3,6 +3,9 @@ import GameObject from "../GameObject";
 import Component from "./Component";
 import Vertices from "../../math/Vertices";
 
+/**
+ * @deprecated Gameobject has these functions instead
+ */
 class Transform extends Component {
 	position: Vector = Vector.zero;
 	positionPrev: Vector = Vector.zero;
