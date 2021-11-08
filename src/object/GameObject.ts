@@ -1,28 +1,49 @@
-import Common from "../core/Common";
 import Vector from "../math/Vector";
 import Vertices from "../math/Vertices";
-import Transform from "./components/Transform";
 import Component from "./components/Component";
+import { getUUID } from "../util/util";
+
+interface ObjectOptions {
+	strokeColor?: string;
+	fillColor?: string;
+}
 
 class GameObject {
 	name: string;
-	id: number;
-
+	uuid: string;
 	components: Component[] = [];
 
+	// rendering
 	vertices: Vertices[];
+	strokeColor = "#ff00ff";
+	fillColor = "#ff00ff";
 
-	constructor(name: string, position: Vector, vertices?: Vertices[]) {
+	// Transform
+	position: Vector = Vector.zero;
+	rotation: Vector = Vector.zero;
+
+	parent: GameObject;
+	children: GameObject[] = [];
+
+	constructor(
+		name: string,
+		position?: Vector,
+		vertices?: Vertices[],
+		options?: ObjectOptions
+	) {
 		this.name = name;
-		this.id = Common.NextId();
+		this.uuid = getUUID();
 
 		this.vertices = vertices ?? [];
+		this.position = position ?? Vector.zero;
 
-		const transform = new Transform(this);
-		transform.SetPosition(position);
-		this.AddComponent(transform);
+		if (options) {
+			this.strokeColor = options.strokeColor ?? this.strokeColor;
+			this.fillColor = options.fillColor ?? this.fillColor;
+		}
 	}
 
+	// COMPONENT STUFF
 	AddComponent(comp: Component) {
 		this.components.push(comp);
 	}
@@ -38,6 +59,11 @@ class GameObject {
 	GetComponents() {
 		return this.components;
 	}
+
+	get canRender() {
+		return this.vertices !== [];
+	}
 }
 
 export default GameObject;
+export { ObjectOptions };
