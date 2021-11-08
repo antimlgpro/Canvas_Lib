@@ -1,9 +1,15 @@
 import Vector from "../math/Vector";
 import Vertices from "../math/Vertices";
-import GameObject from "../object/GameObject";
+import GameObject, { ObjectOptions } from "../object/GameObject";
 
 class Primitives {
-	static Rectangle(x: number, y: number, width: number, height: number) {
+	static Rectangle(
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		options: ObjectOptions
+	) {
 		const label = "Rectangle";
 		const position = new Vector(x, y);
 		const vertices = Vertices.FromPath(
@@ -11,7 +17,7 @@ class Primitives {
 		);
 		if (vertices === null) return;
 
-		return new GameObject(label, position, vertices);
+		return new GameObject(label, position, vertices, options);
 	}
 }
 
