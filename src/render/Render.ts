@@ -1,4 +1,5 @@
 import GameObject from "../object/GameObject";
+import Color from "../util/Color";
 
 interface RenderOptions {
 	fps?: number;
@@ -7,6 +8,9 @@ interface RenderOptions {
 	height?: number;
 
 	hasBounds?: boolean;
+
+	center?: boolean;
+	backgroundColor?: string;
 }
 
 interface Bounds {
@@ -30,11 +34,12 @@ class Render {
 	ctx: CanvasRenderingContext2D;
 
 	fps = 60;
-
 	width = 100;
 	height = 100;
 	hasBounds = false;
-	bodies: GameObject[];
+	convex = true;
+
+	objects: GameObject[];
 
 	bounds: Bounds = {
 		min: {
@@ -52,26 +57,36 @@ class Render {
 		lastTime: 0,
 	};
 
+	// todo: This should be a color object
+	backgroundColor = "#202020";
+
 	constructor(options: RenderOptions) {
 		this.fps = options.fps ?? this.fps;
 		this.width = options.width ?? this.width;
 		this.height = options.height ?? this.height;
 		this.hasBounds = options.hasBounds ?? this.hasBounds;
+		this.backgroundColor = options.backgroundColor ?? this.backgroundColor;
 
 		this.canvas = this.canvas ?? this._CreateCanvas();
 		this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
-		this.bodies = [];
+		this.objects = [];
 
+		// Canvas creation
 		const element: HTMLElement = <HTMLElement>(
 			document.getElementById("container")
 		);
 		element.appendChild(this.canvas);
 		this.canvas.style.border = "1px solid black";
+
+		if (options.center) {
+			element.style.textAlign = "center";
+			this.canvas.style.display = "inline";
+		}
 	}
 
 	AddGameObject(gameObject: GameObject) {
-		this.bodies.push(gameObject);
+		this.objects.push(gameObject);
 	}
 
 	Run() {
@@ -87,50 +102,69 @@ class Render {
 	}
 
 	private World(ms: number) {
-		//this.ctx.fillStyle = "white";
-		//this.ctx.fillRect(0, 0, this.width, this.height);
-		this.ctx.clearRect(0, 0, this.width, this.height);
+		this.ctx.fillStyle = this.backgroundColor;
+		this.ctx.fillRect(0, 0, this.width, this.height);
 
-		this.ObjectWireframes(this.bodies);
+		if (this.convex) {
+			this.DrawConvex(this.objects);
+		} else {
+			this.DrawWireframes(this.objects);
+		}
 	}
 
-	private ObjectWireframes(bodies: GameObject[]) {
+	private DrawWireframes(objects: GameObject[]) {
 		const c = this.ctx;
+		// render all objects
+		for (const obj of objects) {
+			if (!obj.canRender) continue;
+			c.translate(obj.position.x, obj.position.y);
+			c.beginPath();
+			this.DrawPolygon(c, obj);
 
-		c.beginPath();
+			c.closePath();
+			c.strokeStyle = obj.strokeColor;
+			c.stroke();
+			c.setTransform(1, 0, 0, 1, 0, 0);
+		}
+	}
 
-		// render all bodies
-		for (let i = 0; i < bodies.length; i++) {
-			const body = bodies[i];
+	private DrawConvex(objects: GameObject[]) {
+		const c = this.ctx;
+		//c.beginPath();
 
-			//if (!body.render.visible) continue;
+		// render all objects
+		for (const obj of objects) {
+			if (!obj.canRender) continue;
+			c.translate(obj.position.x, obj.position.y);
+			c.beginPath();
+			this.DrawPolygon(c, obj);
 
-			// handle compound bodys
-			c.moveTo(body.vertices[0].x, body.vertices[0].y);
+			c.closePath();
+			c.fillStyle = obj.fillColor;
+			c.fill();
+			c.setTransform(1, 0, 0, 1, 0, 0);
+		}
+	}
 
-			for (let j = 1; j < body.vertices.length; j++) {
-				if (!body.vertices[j - 1].isInternal) {
-					// || showInternalEdges
-					c.lineTo(body.vertices[j].x, body.vertices[j].y);
-				} else {
-					c.moveTo(body.vertices[j].x, body.vertices[j].y);
-				}
+	private DrawPolygon(c: CanvasRenderingContext2D, obj: GameObject) {
+		c.moveTo(obj.vertices[0].x, obj.vertices[0].y);
 
-				if (body.vertices[j].isInternal) {
-					// && !showInternalEdges
-					c.moveTo(
-						body.vertices[(j + 1) % body.vertices.length].x,
-						body.vertices[(j + 1) % body.vertices.length].y
-					);
-				}
+		for (let j = 1; j < obj.vertices.length; j++) {
+			if (!obj.vertices[j - 1].isInternal) {
+				c.lineTo(obj.vertices[j].x, obj.vertices[j].y);
+			} else {
+				c.moveTo(obj.vertices[j].x, obj.vertices[j].y);
 			}
 
-			c.lineTo(body.vertices[0].x, body.vertices[0].y);
+			if (obj.vertices[j].isInternal) {
+				c.moveTo(
+					obj.vertices[(j + 1) % obj.vertices.length].x,
+					obj.vertices[(j + 1) % obj.vertices.length].y
+				);
+			}
 		}
 
-		c.lineWidth = 1;
-		c.strokeStyle = "#202020";
-		c.stroke();
+		c.lineTo(obj.vertices[0].x, obj.vertices[0].y);
 	}
 
 	private _UpdateTiming(ms: number) {
