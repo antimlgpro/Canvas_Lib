@@ -2,10 +2,11 @@ import Vector from "../math/Vector";
 import Vertices from "../math/Vertices";
 import Component from "./components/Component";
 import { getUUID } from "../util/util";
+import Color from "../util/Color";
 
 interface ObjectOptions {
-	strokeColor?: string;
-	fillColor?: string;
+	strokeColor?: Color;
+	fillColor?: Color;
 }
 
 class GameObject {
@@ -15,8 +16,8 @@ class GameObject {
 
 	// rendering
 	vertices: Vertices[];
-	strokeColor = "#ff00ff";
-	fillColor = "#ff00ff";
+	strokeColor = new Color("#ff00ff");
+	fillColor = new Color("#ff00ff");
 
 	// Transform
 	position: Vector = Vector.zero;
@@ -41,6 +42,14 @@ class GameObject {
 			this.strokeColor = options.strokeColor ?? this.strokeColor;
 			this.fillColor = options.fillColor ?? this.fillColor;
 		}
+	}
+
+	SetPosition(vec: Vector) {
+		this.position = vec;
+	}
+
+	SetRotation(vec: Vector) {
+		this.rotation = vec;
 	}
 
 	// COMPONENT STUFF

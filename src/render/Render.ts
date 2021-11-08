@@ -10,7 +10,7 @@ interface RenderOptions {
 	hasBounds?: boolean;
 
 	center?: boolean;
-	backgroundColor?: string;
+	backgroundColor?: Color;
 }
 
 interface Bounds {
@@ -58,7 +58,7 @@ class Render {
 	};
 
 	// todo: This should be a color object
-	backgroundColor = "#202020";
+	backgroundColor = new Color("#202020");
 
 	constructor(options: RenderOptions) {
 		this.fps = options.fps ?? this.fps;
@@ -102,7 +102,7 @@ class Render {
 	}
 
 	private World(ms: number) {
-		this.ctx.fillStyle = this.backgroundColor;
+		this.ctx.fillStyle = this.backgroundColor.hexColor;
 		this.ctx.fillRect(0, 0, this.width, this.height);
 
 		if (this.convex) {
@@ -122,7 +122,7 @@ class Render {
 			this.DrawPolygon(c, obj);
 
 			c.closePath();
-			c.strokeStyle = obj.strokeColor;
+			c.strokeStyle = obj.strokeColor.hexColor;
 			c.stroke();
 			c.setTransform(1, 0, 0, 1, 0, 0);
 		}
@@ -140,7 +140,7 @@ class Render {
 			this.DrawPolygon(c, obj);
 
 			c.closePath();
-			c.fillStyle = obj.fillColor;
+			c.fillStyle = obj.fillColor.hexColor;
 			c.fill();
 			c.setTransform(1, 0, 0, 1, 0, 0);
 		}
