@@ -1,5 +1,4 @@
 import Vector from "../math/Vector";
-import Rigidbody from "../object/components/Rigidbody";
 import GameObject from "../object/GameObject";
 import Render from "../render/Render";
 
@@ -47,34 +46,14 @@ class Engine {
 		this.timing.timestamp += deltaTime;
 		this.timing.lastDelta = deltaTime;
 
-		//this.ApplyGravity();
-
 		for (const go of this.gameObjects) {
 			const comps = go.GetComponents();
 			for (const comp of comps) {
-				if (comp.type == "Rigidbody") {
-					// This applies gravity
-					const body = <Rigidbody>comp;
-					const force = new Vector(
-						body.mass * this.gravity.x * this.gravityScale,
-						body.mass * this.gravity.y * this.gravityScale
-					);
-					body.AddForce(force);
-					//console.log(body.positionPrev);
-				}
-
 				comp.Update(deltaTime);
 			}
 		}
 
 		this.timing.lastElapsed = Date.now() - startTime;
-	}
-
-	protected ApplyGravity() {
-		for (const go of this.gameObjects) {
-			const rigidbody = <Rigidbody>go.GetComponent("Rigidbody");
-			if (!rigidbody) continue;
-		}
 	}
 }
 
