@@ -1,7 +1,18 @@
 const path = require("path");
 
+/*	
+factory: "./src/factory/index.ts",
+math: "./src/math/index.ts",
+object: "./src/object/index.ts",
+render: "./src/render/index.ts",
+util: "./src/util/index.ts", 
+*/
+
 module.exports = {
-	entry: "./src/index.ts",
+	entry: {
+		core: "./src/core.ts",
+		test: "./src/test.ts",
+	},
 	module: {
 		rules: [
 			{
@@ -15,7 +26,11 @@ module.exports = {
 		extensions: [".ts", ".js"],
 	},
 	output: {
-		filename: "bundle.js",
+		filename: "[name].bundle.js",
+		library: {
+			name: "canvaslib",
+			type: "umd",
+		},
 		path: path.resolve(__dirname, "dist"),
 	},
 	mode: "development",
