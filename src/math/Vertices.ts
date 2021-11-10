@@ -4,20 +4,12 @@ class Vertices {
 	x: number;
 	y: number;
 	index: number;
-	body: any;
 	isInternal: boolean;
 
-	constructor(
-		x: number,
-		y: number,
-		index: number,
-		body: any,
-		isInternal: boolean
-	) {
+	constructor(x: number, y: number, index: number, isInternal: boolean) {
 		this.x = x;
 		this.y = y;
 		this.index = index;
-		this.body = body;
 		this.isInternal = isInternal;
 	}
 
@@ -26,7 +18,7 @@ class Vertices {
 
 		for (let i = 0; i < points.length; i++) {
 			const point = points[i];
-			const vertex = new Vertices(point.x, point.y, i, undefined, false);
+			const vertex = new Vertices(point.x, point.y, i, false);
 
 			vertices.push(vertex);
 		}

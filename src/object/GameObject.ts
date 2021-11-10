@@ -16,12 +16,15 @@ class GameObject {
 
 	// rendering
 	vertices: Vertices[];
+	_canRender: boolean;
 	strokeColor = new Color("#ff00ff");
 	fillColor = new Color("#ff00ff");
 
 	// Transform
 	position: Vector = Vector.zero;
 	rotation: Vector = Vector.zero;
+	_localPosition: Vector = Vector.zero;
+	_localRotation: Vector = Vector.zero;
 
 	parent: GameObject;
 	children: GameObject[] = [];
@@ -42,6 +45,33 @@ class GameObject {
 			this.strokeColor = options.strokeColor ?? this.strokeColor;
 			this.fillColor = options.fillColor ?? this.fillColor;
 		}
+	}
+
+	// todo: add local position
+	get localPosition() {
+		if (this.parent === undefined) {
+			return this.rotation;
+		} else {
+			return this._localPosition;
+		}
+	}
+	// todo: add local position
+	set localPosition(val: Vector) {
+		this._localRotation = val;
+	}
+
+	// todo: add local position
+	get localRotation() {
+		if (this.parent === undefined) {
+			return this.rotation;
+		} else {
+			return this._localRotation;
+		}
+	}
+
+	// todo: add local position
+	set localRotation(val: Vector) {
+		this._localRotation = val;
 	}
 
 	SetPosition(vec: Vector) {
@@ -70,7 +100,16 @@ class GameObject {
 	}
 
 	get canRender() {
-		return this.vertices !== [];
+		this._canRender = this.vertices !== [];
+		return this._canRender;
+	}
+
+	set canRender(val) {
+		if (this.vertices !== []) {
+			this._canRender = val;
+		} else {
+			this._canRender = false;
+		}
 	}
 }
 

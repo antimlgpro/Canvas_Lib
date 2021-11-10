@@ -1,0 +1,92 @@
+{
+	"fb1cf168-59a3-42cf-82dc-eba2b8b27b10": {
+		"type": "GameObject",
+		"name": "Rect",
+		"isActive": true,
+		"parent": {
+			"fileID": "7cdf3172-3344-4368-b942-b7cc1ddc6624"
+		},
+		"localPosition": {
+			"x": 0,
+			"y": 0
+		},
+		"localRotation": {
+			"x": 0,
+			"y": 0
+		},
+		"components": [
+			{
+				"fileID": "d4fae13b-f03c-4bdf-ae4b-c80d66915560"
+			}
+		],
+		"fillColor": {
+			"fileID": "908685c1-29db-496d-8215-b621831984df"
+		},
+		"strokeColor": {
+			"fileID": "d03718bc-2e2d-4fcf-b49b-dfcfd78bf185"
+		},
+		"vertices": [
+			{
+				"x": 0,
+				"y": 0,
+				"index": 0,
+				"isInternal": false
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"index": 1,
+				"isInternal": false
+			},
+			{
+				"x": 100,
+				"y": 100,
+				"index": 2,
+				"isInternal": false
+			},
+			{
+				"x": 0,
+				"y": 100,
+				"index": 3,
+				"isInternal": false
+			}
+		]
+	},
+	"7cdf3172-3344-4368-b942-b7cc1ddc6624": {
+		"type": "GameObject",
+		"name": "Parent",
+		"isActive": true,
+		"children": [
+			{
+				"fileID": "7cdf3172-3344-4368-b942-b7cc1ddc6624"
+			}
+		],
+		"components": [
+			{
+				"fileID": "d4fae13b-f03c-4bdf-ae4b-c80d66915560"
+			}
+		],
+		"fillColor": {
+			"fileID": "908685c1-29db-496d-8215-b621831984df"
+		},
+		"strokeColor": {
+			"fileID": "d03718bc-2e2d-4fcf-b49b-dfcfd78bf185"
+		}
+	},
+	"d4fae13b-f03c-4bdf-ae4b-c80d66915560": {
+		"type": "Test",
+		"gameObject": {
+			"fileID": "fb1cf168-59a3-42cf-82dc-eba2b8b27b10"
+		}
+	},
+	"908685c1-29db-496d-8215-b621831984df": {
+		"type": "Color",
+		"hexColor": "#cb0020",
+		"rgbColor": "rgb(203, 0, 32)"
+	},
+	"d03718bc-2e2d-4fcf-b49b-dfcfd78bf185": {
+		"type": "Color",
+		"hexColor": "#ff00ff",
+		"rgbColor": "rgb(255, 0, 255)"
+	}
+}
