@@ -1,4 +1,4 @@
-import Mathf from "./Mathf";
+import { Clamp01 } from "./Mathf";
 
 class Vector {
 	x: number;
@@ -43,7 +43,7 @@ class Vector {
 	}
 
 	static Lerp(a: Vector, b: Vector, t: number) {
-		t = Mathf.Clamp01(t);
+		t = Clamp01(t);
 
 		return new Vector(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
 	}
