@@ -1,4 +1,4 @@
-import Vertices from "../../math/Vertices";
+import Vertex from "../../math/Vertex";
 import { getUUID } from "../../util/util";
 import Component from "../components/Component";
 import GameObject from "../GameObject";
@@ -20,7 +20,7 @@ class Prefab {
 	GUID: string;
 	name: string;
 
-	vertices: Vertices;
+	vertices: Vertex;
 	type: string;
 
 	components: CompList[] = [];
@@ -105,7 +105,7 @@ class Prefab {
 			if (obj.type === "VertexArray") {
 				const vertArr = obj as VertArrayType;
 				const newVertArr = vertArr.vertices.map((vert) => {
-					return new Vertices(vert.x, vert.y, vert.index, vert.isInternal);
+					return new Vertex(vert.x, vert.y, vert.index, vert.isInternal);
 				});
 
 				parsedObjects.push({ guid: guid, obj: newVertArr });

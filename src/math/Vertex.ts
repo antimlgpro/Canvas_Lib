@@ -1,6 +1,6 @@
 import Vector from "./Vector";
 
-class Vertices {
+class Vertex {
 	x: number;
 	y: number;
 	index: number;
@@ -13,12 +13,28 @@ class Vertices {
 		this.isInternal = isInternal;
 	}
 
+	static getCenter(vertices: Vertex[]) {
+		const x_list = [];
+		const y_list = [];
+		for (const vertex of vertices) {
+			x_list.push(vertex.x);
+			y_list.push(vertex.y);
+		}
+
+		const len = vertices.length;
+
+		const _x = x_list.reduce((a, b) => a + b, 0) / len;
+		const _y = y_list.reduce((a, b) => a + b, 0) / len;
+
+		return new Vector(_x, _y);
+	}
+
 	static Create(points: Vector[]) {
-		const vertices: Vertices[] = [];
+		const vertices: Vertex[] = [];
 
 		for (let i = 0; i < points.length; i++) {
 			const point = points[i];
-			const vertex = new Vertices(point.x, point.y, i, false);
+			const vertex = new Vertex(point.x, point.y, i, false);
 
 			vertices.push(vertex);
 		}
@@ -38,17 +54,17 @@ class Vertices {
 			points.push(new Vector(parseFloat(x), parseFloat(y)));
 		}
 
-		return Vertices.Create(points);
+		return Vertex.Create(points);
 	}
 
-	static Translate(vertices: Vertices[], vector: Vector, scalar = 1) {
+	static Translate(vertices: Vertex[], vector: Vector, scalar = 1) {
 		if (scalar) {
-			for (let i = 0; i < vertices.length; i++) {
+			for (let i = 0; i < Vertex.length; i++) {
 				vertices[i].x += vector.x * scalar;
 				vertices[i].y += vector.y * scalar;
 			}
 		} else {
-			for (let i = 0; i < vertices.length; i++) {
+			for (let i = 0; i < Vertex.length; i++) {
 				vertices[i].x += vector.x;
 				vertices[i].y += vector.y;
 			}
@@ -56,4 +72,4 @@ class Vertices {
 	}
 }
 
-export default Vertices;
+export default Vertex;

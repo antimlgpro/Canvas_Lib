@@ -1,7 +1,7 @@
 import Vector from "../../math/Vector";
 import GameObject from "../GameObject";
 import Component from "./Component";
-import Vertices from "../../math/Vertices";
+import Vertices from "../../math/Vertex";
 
 /**
  * @deprecated Gameobject has these functions instead
