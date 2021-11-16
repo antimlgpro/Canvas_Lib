@@ -1,13 +1,8 @@
+import { ObjectOptions, Primitives } from "./core";
 import Engine, { EngineOptions } from "./core/Engine";
-import Primitives from "./factory/Primitives";
-import GameObject, { ObjectOptions } from "./object/GameObject";
+import Input from "./input/Input";
 import Render, { RenderOptions } from "./render/Render";
 import Color from "./util/Color";
-import Prefab from "./object/prefab/Prefab";
-import Transform from "./object/components/Transform";
-import { Vector } from "./core";
-
-import rectPrefab from "./testPrefabs/rect.prefab";
 
 const engineOptions: EngineOptions = {};
 const renderOptions: RenderOptions = {
@@ -23,6 +18,14 @@ let _Render: Render;
 
 const gameLoop = () => {
 	_Engine.Update();
+
+	if (Input.getButtonDown("Forward")) {
+		console.log("forward down");
+	}
+
+	if (Input.getButtonUp("Forward")) {
+		console.log("forward up");
+	}
 };
 
 window.onload = () => {
@@ -30,13 +33,14 @@ window.onload = () => {
 	_Render = new Render(renderOptions);
 	_Engine.render = _Render;
 
-	/* 	const options: ObjectOptions = { fillColor: new Color("#cb0020") };
-	const rect = <GameObject>Primitives.Rectangle(200, 300, 100, 100, options);
-	rect.AddComponent(new Transform(rect, new Vector(123, 456)));
-	_Engine.AddGameObject(rect); */
+	const obj = Primitives.Circle(300, 300, 100, {
+		fillColor: new Color("#3464eb"),
+	});
+	_Engine.AddGameObject(obj);
+	console.log(obj);
 
-	const rect = <GameObject>Prefab.fromJson(rectPrefab);
-	_Engine.AddGameObject(rect);
+	Input.addListener();
+	Input.addMapping("Forward", "KeyW");
 
 	_Render.Run();
 	setInterval(gameLoop, 1000 / 60);
