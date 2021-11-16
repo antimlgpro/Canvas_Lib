@@ -1,8 +1,9 @@
 import Vector from "../math/Vector";
-import Vertices from "../math/Vertices";
+import Vertices from "../math/Vertex";
 import Component from "./components/Component";
 import { getUUID } from "../util/util";
 import Color from "../util/Color";
+import Vertex from "../math/Vertex";
 
 interface ObjectOptions {
 	strokeColor?: Color;
@@ -16,15 +17,15 @@ class GameObject {
 
 	// rendering
 	vertices: Vertices[];
-	_canRender: boolean;
+	_isActive = true;
 	strokeColor = new Color("#ff00ff");
 	fillColor = new Color("#ff00ff");
 
 	// Transform
-	position: Vector = Vector.zero;
-	rotation: Vector = Vector.zero;
-	_localPosition: Vector = Vector.zero;
-	_localRotation: Vector = Vector.zero;
+	private _position: Vector = Vector.zero;
+	private _rotation: Vector = Vector.zero;
+	private _localPosition: Vector = Vector.zero;
+	private _localRotation: Vector = Vector.zero;
 
 	parent: GameObject;
 	children: GameObject[] = [];
@@ -47,39 +48,83 @@ class GameObject {
 		}
 	}
 
+	get center() {
+		const center = Vertex.getCenter(this.vertices);
+		return new Vector(this.position.x + center.x, this.position.y + center.y);
+	}
+
+	get position() {
+		if (this.parent === undefined) {
+			return this._position;
+		} else {
+			return this.localPositionToWorld(this._localPosition, this.parent);
+		}
+	}
+	set position(value: Vector) {
+		this._position = value;
+	}
 	// todo: add local position
 	get localPosition() {
 		if (this.parent === undefined) {
-			return this.rotation;
+			return this._position;
 		} else {
 			return this._localPosition;
 		}
 	}
 	// todo: add local position
 	set localPosition(val: Vector) {
-		this._localRotation = val;
+		this._localPosition = val;
 	}
-
 	// todo: add local position
 	get localRotation() {
 		if (this.parent === undefined) {
-			return this.rotation;
+			return this._rotation;
 		} else {
 			return this._localRotation;
 		}
 	}
-
 	// todo: add local position
 	set localRotation(val: Vector) {
 		this._localRotation = val;
 	}
 
+	private localPositionToWorld(local: Vector, parent: GameObject) {
+		const worldPos = new Vector(
+			parent.position.x + local.x,
+			parent.position.y + local.y
+		);
+		return worldPos;
+	}
+
+	private worldToLocalPosition(world: Vector) {
+		console.log(world);
+
+		return new Vector(0, 0);
+	}
+
 	SetPosition(vec: Vector) {
-		this.position = vec;
+		this._position = vec;
 	}
 
 	SetRotation(vec: Vector) {
-		this.rotation = vec;
+		this._rotation = vec;
+	}
+
+	SetParent(gameObject: GameObject, keepWorldPosition = true) {
+		this.parent = gameObject;
+		gameObject.AddChild(this);
+		const parentPos = this.parent.position;
+
+		if (keepWorldPosition) {
+			this.localPosition = new Vector(
+				this._position.x - parentPos.x,
+				this._position.y - parentPos.y
+			);
+		}
+	}
+
+	AddChild(gameObject: GameObject) {
+		this.children.push(gameObject);
 	}
 
 	// COMPONENT STUFF
@@ -99,17 +144,16 @@ class GameObject {
 		return this.components;
 	}
 
-	get canRender() {
-		this._canRender = this.vertices !== [];
-		return this._canRender;
+	get hasVertices() {
+		return this.vertices.length > 0;
 	}
 
-	set canRender(val) {
-		if (this.vertices !== []) {
-			this._canRender = val;
-		} else {
-			this._canRender = false;
-		}
+	get isActive() {
+		return this._isActive;
+	}
+
+	set isActive(val) {
+		this._isActive = val;
 	}
 }
 
