@@ -1,3 +1,4 @@
+import { Vector } from "../core";
 import GameObject from "../object/GameObject";
 import Color from "../util/Color";
 
@@ -105,6 +106,8 @@ class Render {
 		this.ctx.fillStyle = this.backgroundColor.hexColor;
 		this.ctx.fillRect(0, 0, this.width, this.height);
 
+		if (this.objects.length <= 0) return;
+
 		if (this.convex) {
 			this.DrawConvex(this.objects);
 		} else {
@@ -116,14 +119,18 @@ class Render {
 		const c = this.ctx;
 		// render all objects
 		for (const obj of objects) {
-			if (!obj.canRender) continue;
+			if (!obj.isActive) continue;
+			if (!obj.hasVertices) continue;
+
 			c.translate(obj.position.x, obj.position.y);
 			c.beginPath();
-			this.DrawPolygon(c, obj);
+			const points = this.DrawPolygon(c, obj, true);
 
 			c.closePath();
 			c.strokeStyle = obj.strokeColor.hexColor;
 			c.stroke();
+
+			if (points) this.drawPoints(points);
 			c.setTransform(1, 0, 0, 1, 0, 0);
 		}
 	}
@@ -134,7 +141,9 @@ class Render {
 
 		// render all objects
 		for (const obj of objects) {
-			if (!obj.canRender) continue;
+			if (!obj.isActive) continue;
+			if (!obj.hasVertices) continue;
+
 			c.translate(obj.position.x, obj.position.y);
 			c.beginPath();
 			this.DrawPolygon(c, obj);
@@ -146,8 +155,17 @@ class Render {
 		}
 	}
 
-	private DrawPolygon(c: CanvasRenderingContext2D, obj: GameObject) {
+	private DrawPolygon(
+		c: CanvasRenderingContext2D,
+		obj: GameObject,
+		showPoints = false
+	) {
+		const points: Vector[] = [];
+
 		c.moveTo(obj.vertices[0].x, obj.vertices[0].y);
+
+		if (showPoints)
+			points.push(new Vector(obj.vertices[0].x, obj.vertices[0].y));
 
 		for (let j = 1; j < obj.vertices.length; j++) {
 			if (!obj.vertices[j - 1].isInternal) {
@@ -155,6 +173,9 @@ class Render {
 			} else {
 				c.moveTo(obj.vertices[j].x, obj.vertices[j].y);
 			}
+
+			if (showPoints)
+				points.push(new Vector(obj.vertices[j].x, obj.vertices[j].y));
 
 			if (obj.vertices[j].isInternal) {
 				c.moveTo(
@@ -165,6 +186,17 @@ class Render {
 		}
 
 		c.lineTo(obj.vertices[0].x, obj.vertices[0].y);
+
+		if (showPoints) return points;
+	}
+
+	private drawPoints(points: Vector[]) {
+		for (const point of points) {
+			this.ctx.fillStyle = "#000";
+			this.ctx.beginPath();
+			this.ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
+			this.ctx.fill();
+		}
 	}
 
 	private _UpdateTiming(ms: number) {
