@@ -1,5 +1,6 @@
 import Vector from "../math/Vector";
-import Vertices from "../math/Vertices";
+import Vertex from "../math/Vertex";
+import { AngleToRadians } from "../math/Mathf";
 import GameObject, { ObjectOptions } from "../object/GameObject";
 
 class Primitives {
@@ -12,13 +13,35 @@ class Primitives {
 	) {
 		const label = "Rectangle";
 		const position = new Vector(x, y);
-		const vertices = Vertices.FromPath(
-			"L 0 0 L " + width + " 0 L " + width + " " + height + " L 0 " + height
-		);
-		if (vertices === null) return;
+		const vertices: Vertex[] = [
+			new Vertex(x, y, 0),
+			new Vertex(x + width, y, 0),
+			new Vertex(x + width, y + width, 0),
+			new Vertex(x, y + width, 0),
+		];
 
 		return new GameObject(label, position, vertices, options);
 	}
+
+	static Circle(x: number, y: number, radius: number, options: ObjectOptions) {
+		const label = "Circle";
+		const position = new Vector(x, y);
+
+		const vertices: Vertex[] = [];
+		const numVertices = 50;
+		const spacing = 360 / numVertices;
+
+		for (let i = 0; i < numVertices; i++) {
+			const x = Math.cos(AngleToRadians(i * spacing)) * radius;
+			const y = Math.sin(AngleToRadians(i * spacing)) * radius;
+			vertices.push(new Vertex(x, y, i, false));
+		}
+
+		return new GameObject(label, position, vertices, options);
+	}
+
+	// todo: Figure out triangle
+	//static Triangle(x, y) {}
 }
 
 export default Primitives;
