@@ -1,4 +1,5 @@
 import { Vector } from "../core";
+import Grid from "../collision/Grid";
 import GameObject from "../object/GameObject";
 import Color from "../util/Color";
 
@@ -58,8 +59,11 @@ class Render {
 		lastTime: 0,
 	};
 
-	// todo: This should be a color object
 	backgroundColor = new Color("#202020");
+
+	// collision grid
+	drawGrid = false;
+	grid: Grid;
 
 	constructor(options: RenderOptions) {
 		this.fps = options.fps ?? this.fps;
@@ -102,7 +106,7 @@ class Render {
 		loop(0);
 	}
 
-	private World(ms: number) {
+	World(ms: number) {
 		this.ctx.fillStyle = this.backgroundColor.hexColor;
 		this.ctx.fillRect(0, 0, this.width, this.height);
 
@@ -112,6 +116,10 @@ class Render {
 			this.DrawConvex(this.objects);
 		} else {
 			this.DrawWireframes(this.objects);
+		}
+
+		if (this.grid && this.drawGrid) {
+			this.grid.renderGrid(this.ctx);
 		}
 	}
 
