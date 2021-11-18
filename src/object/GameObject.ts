@@ -4,10 +4,13 @@ import Component from "./components/Component";
 import { getUUID } from "../util/util";
 import Color from "../util/Color";
 import Vertex from "../math/Vertex";
+import Bounds from "../math/Bounds";
+import { minBoundingRect } from "../math/ConvexHull";
 
 interface ObjectOptions {
 	strokeColor?: Color;
 	fillColor?: Color;
+	bounds?: Bounds;
 }
 
 class GameObject {
@@ -30,6 +33,9 @@ class GameObject {
 	parent: GameObject;
 	children: GameObject[] = [];
 
+	// Collision
+	boundingBox: Bounds;
+
 	constructor(
 		name: string,
 		position?: Vector,
@@ -45,12 +51,14 @@ class GameObject {
 		if (options) {
 			this.strokeColor = options.strokeColor ?? this.strokeColor;
 			this.fillColor = options.fillColor ?? this.fillColor;
+			this.boundingBox =
+				options.bounds ?? this.boundsFromVertices(this.vertices);
 		}
 	}
 
 	get center() {
 		const center = Vertex.getCenter(this.vertices);
-		return new Vector(this.position.x + center.x, this.position.y + center.y);
+		return center; //new Vector(this.position.x + center.x, this.position.y + center.y);
 	}
 
 	get position() {
@@ -60,7 +68,17 @@ class GameObject {
 			return this.localPositionToWorld(this._localPosition, this.parent);
 		}
 	}
+
 	set position(value: Vector) {
+		const translation = new Vector(
+			value.x - this._position.x,
+			value.y - this._position.y
+		);
+
+		if (this.boundingBox) {
+			this.boundingBox.translate(translation);
+		}
+
 		this._position = value;
 	}
 	// todo: add local position
@@ -96,10 +114,19 @@ class GameObject {
 		return worldPos;
 	}
 
-	private worldToLocalPosition(world: Vector) {
-		console.log(world);
+	boundsFromVertices(verts: Vertex[]) {
+		const rect = minBoundingRect(verts);
 
-		return new Vector(0, 0);
+		rect.map((e) => {
+			e.x += this.position.x;
+			e.y += this.position.y;
+			return e;
+		});
+
+		const w = rect[2].x - rect[0].x;
+		const h = rect[2].y - rect[0].y;
+
+		return new Bounds(rect[0].x, rect[0].y, w, h);
 	}
 
 	SetPosition(vec: Vector) {
