@@ -1,8 +1,15 @@
 import Engine, { EngineOptions } from "./core/Engine";
 import Events from "./core/Events";
 import EngineModule from "./core/modules/EngineModule";
-import Primitives from "./factory/Primitives";
-import Mathf from "./math/Mathf";
+import Primitives from "./object/factory/Primitives";
+import {
+	Clamp,
+	Clamp01,
+	Repeat,
+	PingPong,
+	Lerp,
+	AngleToRadians,
+} from "./math/Mathf";
 import Vector from "./math/Vector";
 import Vertices from "./math/Vertex";
 import GameObject, { ObjectOptions } from "./object/GameObject";
@@ -17,8 +24,13 @@ export {
 	ObjectOptions,
 	Render,
 	RenderOptions,
-	Mathf,
 	Vector,
 	Vertices,
 	Primitives,
+	Clamp,
+	Clamp01,
+	Repeat,
+	PingPong,
+	Lerp,
+	AngleToRadians,
 };
