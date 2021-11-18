@@ -1,4 +1,4 @@
-import Vector from "./Vector";
+import Vector from "../math/Vector";
 
 class Bounds {
 	x: number;
