@@ -14,10 +14,10 @@ class Primitives {
 		const label = "Rectangle";
 		const position = new Vector(x, y);
 		const vertices: Vertex[] = [
-			new Vertex(x, y, 0),
-			new Vertex(x + width, y, 1),
-			new Vertex(x + width, y + width, 2),
-			new Vertex(x, y + width, 3),
+			new Vertex(0, 0, 0),
+			new Vertex(width, 0, 1),
+			new Vertex(width, height, 2),
+			new Vertex(0, height, 3),
 		];
 
 		return new GameObject(label, position, vertices, options);
