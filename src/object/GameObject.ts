@@ -4,7 +4,7 @@ import Component from "./components/Component";
 import { getUUID } from "../util/util";
 import Color from "../util/Color";
 import Vertex from "../math/Vertex";
-import Bounds from "../math/Bounds";
+import Bounds from "../collision/Bounds";
 import { minBoundingRect } from "../math/ConvexHull";
 
 interface ObjectOptions {
